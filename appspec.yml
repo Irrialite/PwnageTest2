@@ -1,0 +1,26 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /app/baseTemp
+permissions:
+  - object: /app/NetworkBase
+    owner: root
+    group: root
+hooks:
+  BeforeInstall:
+    - location: deploy/beforeInstall.sh
+      timeout: 300
+      runas: root
+  AfterInstall:
+    - location: deploy/afterInstall.sh
+      timeout: 300
+      runas: root
+  ApplicationStop:
+    - location: deploy/stop.sh
+      timeout: 30
+      runas: root
+  ApplicationStart:
+    - location: deploy/start.sh
+      timeout: 300
+      runas: root
