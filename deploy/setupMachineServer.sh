@@ -26,10 +26,10 @@ server {
 	location / {
 		proxy_pass http://localhost:5004;
 		proxy_http_version 1.1;
-		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Upgrade \$http_upgrade;
 		proxy_set_header Connection keep-alive;
-		proxy_set_header Host $host;
-		proxy_cache_bypass $http_upgrade;
+		proxy_set_header Host \$host;
+		proxy_cache_bypass \$http_upgrade;
 	}
 }
 EOM
