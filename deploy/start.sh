@@ -1,4 +1,6 @@
 #!/bin/bash
+# exit on any error code
+set -e
 cd /app/NetworkBase/src/NetworkBase
 sudo dotnet restore
 if [ -d /app/server/ ]; then
