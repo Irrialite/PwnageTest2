@@ -10,4 +10,9 @@ namespace NetworkBase.Events.Args
         public int game;
         public int id;
     }
+
+    public struct GameServerList
+    {
+        public int[][] servers;
+    }
 }
