@@ -9,6 +9,7 @@ namespace NetworkBase.Events.Args
     {
         public int game;
         public int id;
+        public int slots;
     }
 
     public struct GameServerList

@@ -1,0 +1,33 @@
+{
+  "version": "1.1.0-alpha1-*",
+  "description": "Distributed cache implementation of Microsoft.Extensions.Caching.Distributed.IDistributedCache using Redis.",
+  "packOptions": {
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/aspnet/caching"
+    },
+    "tags": [
+      "cache",
+      "distributedcache",
+      "redis"
+    ]
+  },
+  "buildOptions": {
+    "warningsAsErrors": true,
+    //"keyFile": "../../tools/Key.snk",
+    "nowarn": [
+      "CS1591"
+    ],
+    "xmlDoc": true
+  },
+  "dependencies": {
+    "Microsoft.Extensions.Caching.Abstractions": "1.1.0-*",
+    "Microsoft.Extensions.Options": "1.0.0-*",
+    "StackExchange.Redis.StrongName": "1.1.604-alpha"
+  },
+  "frameworks": {
+	"netstandard1.0": {
+		"imports" : "dnxcore50"
+	}
+  }
+}

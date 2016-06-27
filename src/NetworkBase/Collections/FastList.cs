@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace NetworkBase.Collections
 {
     /// <summary>
-    /// Copy from .net List<T>. Added faster AddRange methods.
+    /// Copy from .net List<T>. Added faster AddRange methods and buffer access.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [DebuggerDisplay("Count = {Count}")]

@@ -8,9 +8,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetworkBase
+namespace NetworkBase.Extensions
 {
-    public static class Extensions
+    public static class TCPExtensions
     {
         public const int c_IntSize = sizeof(int);
 
