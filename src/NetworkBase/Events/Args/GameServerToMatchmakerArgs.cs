@@ -10,6 +10,7 @@ namespace NetworkBase.Events.Args
         public int game;
         public int id;
         public int slots;
+        public int secret;
     }
 
     public struct GameServerList

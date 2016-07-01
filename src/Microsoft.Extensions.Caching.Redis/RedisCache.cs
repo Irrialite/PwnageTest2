@@ -46,14 +46,6 @@ namespace Microsoft.Extensions.Caching.Redis
         private readonly RedisCacheOptions _options;
         //private readonly string _instance;
 
-        public IDatabase Database
-        {
-            get
-            {
-                return _cache;
-            }
-        }
-
         public RedisCache(IOptions<RedisCacheOptions> optionsAccessor)
         {
             if (optionsAccessor == null)
@@ -90,6 +82,38 @@ namespace Microsoft.Extensions.Caching.Redis
             }
 
             return await GetAndRefreshAsync(key, getData: true);
+        }
+
+        public async Task<bool> LockTakeAsync(string key, string value, TimeSpan expiry)
+        {
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            await ConnectAsync();
+            return await _cache.LockTakeAsync(key, value, expiry);
+        }
+
+        public async Task<bool> LockReleaseAsync(string key, string value)
+        {
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            await ConnectAsync();
+            return await _cache.LockReleaseAsync(key, value);
         }
 
         public void Set(string key, byte[] value, DistributedCacheEntryOptions options)
@@ -163,7 +187,7 @@ namespace Microsoft.Extensions.Caching.Redis
         /// <summary>
         /// Only supports absolute expiration value.
         /// </summary>
-        public async Task AddSetAsync(string key, byte[] value, DistributedCacheEntryOptions options)
+        public async Task<bool> AddSetAsync(string key, byte[] value)
         {
             if (key == null)
             {
@@ -177,16 +201,25 @@ namespace Microsoft.Extensions.Caching.Redis
 
             await ConnectAsync();
 
-            var creationTime = DateTimeOffset.UtcNow;
+            return await _cache.SetAddAsync(key, value);
+        }
 
-            var absoluteExpiration = GetAbsoluteExpiration(creationTime, options);
+        public async Task<byte[][]> GetSetMembersAsync(string key)
+        {
+            if (key == null)
+            {
+                throw new ArgumentNullException(key);
+            }
 
-            await _cache.ScriptEvaluateAsync(SAddScript, new RedisKey[] { key },
-                new RedisValue[]
-                {
-                        value,
-                        GetExpirationInSeconds(creationTime, absoluteExpiration, options) ?? NotPresent,
-                });
+            await ConnectAsync();
+            var res = await _cache.SetMembersAsync(key);
+            var byteRes = new byte[res.Length][];
+            for (int i = 0; i < res.Length; ++i)
+            {
+                byteRes[i] = res[i];
+            }
+
+            return byteRes;
         }
 
         public async Task<bool> RemoveSetAsync(string key, byte[] value)
